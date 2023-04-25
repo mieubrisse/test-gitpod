@@ -15,7 +15,7 @@ tasks:
       clear  
 
       # If a Kurtosis package was specified as an envvar, run it
-      [ -n KURTOSIS_PACKAGE_LOCATOR ] && kurtosis run "${KURTOSIS_PACKAGE_LOCATOR}"
+      [ -n "${KURTOSIS_PACKAGE_LOCATOR}" ] && kurtosis run "${KURTOSIS_PACKAGE_LOCATOR}"
 
 ports:
   - name: Kurtosis Engine GRPC Port
