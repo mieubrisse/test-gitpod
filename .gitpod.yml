@@ -3,12 +3,19 @@ image: mieubrisse/test-gitpod
 tasks:
   - name: Kurtosis
     command: |
-      docker load /docker-images/engine.tgz
-      docker load /docker-images/core.tgz
-      kurtosis engine restart
-      kurtosis run github.com/fake-package/fake-package-purely-for-analytics &> /dev/null || kurtosis clean -a
+      # Load the images we cached
+      tar -xOzf /docker-images/engine.tgz | docker load
+      tar -xOzf /docker-images/core.tgz | docker load
+
+      # Notify of a Gitpod usage
+      kurtosis run github.com/fake-package/fake-package-purely-for-analytics &> /dev/null
+      kurtosis clean -a 
+
       code README.md
       clear  
+
+      # If a Kurtosis package was specified as an envvar, run it
+      [ -n KURTOSIS_PACKAGE_LOCATOR ] && kurtosis run "${KURTOSIS_PACKAGE_LOCATOR}"
 
 ports:
   - name: Kurtosis Engine GRPC Port
