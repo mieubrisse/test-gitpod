@@ -1,0 +1,21 @@
+image: mieubrisse/test-gitpod
+
+tasks:
+  - name: Kurtosis
+    command: |
+      docker load /docker-images/engine.tgz
+      docker load /docker-images/core.tgz
+      kurtosis engine restart
+      kurtosis run github.com/fake-package/fake-package-purely-for-analytics &> /dev/null || kurtosis clean -a
+      code README.md
+      clear  
+
+ports:
+  - name: Kurtosis Engine GRPC Port
+    description: The Kurtosis engine's GRPC listen port
+    port: 9710
+    onOpen: ignore
+
+vscode:
+  extensions:
+    - Kurtosis.kurtosis-extension
